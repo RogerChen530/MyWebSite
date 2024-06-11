@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Album</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('account') }}">Account</a></li>
+                <li><a href="{{ url_for('announcements') }}">Announcements</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Upload Photo</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload</button>
+        </form>
+        
+        <h2>Photo Gallery</h2>
+        <!-- Display uploaded photos -->
+        {% for photo in photos %}
+            <img src="{{ photo[0] }}" alt="Photo" style="width:100px;height:100px;">
+        {% endfor %}
+    </main>
+    <footer>
+        <p>&copy; 2023 My Website</p>
+    </footer>
+</body>
+</html>

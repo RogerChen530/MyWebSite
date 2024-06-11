@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Account Management</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('account') }}">Account Management</a></li>
+                <li><a href="{{ url_for('album') }}">Album Management</a></li>
+                <li><a href="{{ url_for('announcements') }}">Announcements</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Register</h2>
+        <form action="/register" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
+
+        <h2>Login</h2>
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <h2>Update Account</h2>
+        <form action="/update" method="POST">
+            <label for="old_username">Old Username:</label>
+            <input type="text" id="old_username" name="old_username" required>
+            <label for="new_username">New Username:</label>
+            <input type="text" id="new_username" name="new_username" required>
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required>
+            <button type="submit">Update</button>
+        </form>
+
+        <h2>Delete Account</h2>
+        <form action="/delete" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <button type="submit">Delete</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2023 My Website</p>
+    </footer>
+</body>
+</html>
