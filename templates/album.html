@@ -1,17 +1,15 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Album</title>
 </head>
 <body>
     <h1>Album</h1>
-    <ul>
+    <a href="{{ url_for('index') }}">Home</a>
     {% for photo in photos %}
-        <li><img src="{{ url_for('static', filename='uploads/' ~ photo[0]) }}" alt="Photo"></li>
+        <div>
+            <img src="{{ url_for('static', filename='uploads/' ~ photo[0]) }}" alt="Photo" style="max-width: 200px;">
+        </div>
     {% endfor %}
-    </ul>
-    <a href="{{ url_for('upload_photo') }}">Upload Photo</a>
 </body>
 </html>

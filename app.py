@@ -127,7 +127,7 @@ def upload_photo():
             file.save(filepath)
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
-            c.execute("INSERT INTO photos (filepath) VALUES (?)", (filepath,))
+            c.execute("INSERT INTO photos (filepath) VALUES (?)", (filename,))
             conn.commit()
             conn.close()
             return redirect(url_for('album'))
