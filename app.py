@@ -19,7 +19,9 @@ def allowed_file(filename):
 def init_db():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS users (
+    # Drop the table if it exists to ensure we create a fresh one
+    c.execute('''DROP TABLE IF EXISTS users''')
+    c.execute('''CREATE TABLE users (
         id INTEGER PRIMARY KEY,
         username TEXT,
         password TEXT,
