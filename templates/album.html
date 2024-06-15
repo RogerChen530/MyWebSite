@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Album</title>
+    <title>相簿</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Album</h1>
-    <a href="{{ url_for('index') }}">Home</a>
+    <h1>相簿</h1>
+    <a href="{{ url_for('index') }}">首頁</a>
     {% for photo in photos %}
         <div>
             <img src="{{ url_for('static', filename='uploads/' ~ photo[0]) }}" alt="Photo" style="max-width: 200px;">
