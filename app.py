@@ -46,7 +46,7 @@ def index():
 @app.route('/show_time')
 def show_time():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return render_template('show_time.html', time=current_time)
+    return f"<h1>Welcome!</h1><p>Current time: {current_time}</p><a href='/login'>Login</a> <a href='/register'>Register</a>"
 
 @app.route('/account')
 def account():

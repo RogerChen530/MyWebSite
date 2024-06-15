@@ -1,29 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Home</title>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Website</h1>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('account') }}">Account Management</a></li>
-                <li><a href="{{ url_for('album') }}">Album Management</a></li>
-                <li><a href="{{ url_for('announcements') }}">Announcements</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <h2>Home Page</h2>
-        <p>Welcome to the home page. Use the navigation above to access different features.</p>
-    </main>
-    <footer>
-        <p>&copy; 2023 My Website</p>
-    </footer>
+    <h1>Home Page</h1>
+    <a href="{{ url_for('album') }}">Album</a>
+    <a href="{{ url_for('announcements') }}">Announcements</a>
+    {% if session.get('is_admin') %}
+    <a href="{{ url_for('account') }}">Account Management</a>
+    {% endif %}
+    <a href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>
