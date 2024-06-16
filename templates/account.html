@@ -20,7 +20,29 @@
     </header>
     <main>
         <h1>帳號管理</h1>
-        <!-- 帳號管理的具體內容可以根據需求添加 -->
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>用戶名</th>
+                <th>密碼</th>
+                <th>超級使用者</th>
+                <th>操作</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <form method="post" action="{{ url_for('account') }}">
+                    <td>{{ user[0] }} <input type="hidden" name="user_id" value="{{ user[0] }}"></td>
+                    <td><input type="text" name="username" value="{{ user[1] }}"></td>
+                    <td><input type="text" name="password" value="{{ user[2] }}"></td>
+                    <td><input type="checkbox" name="is_admin" {% if user[3] %}checked{% endif %}></td>
+                    <td>
+                        <button type="submit" name="update">更新</button>
+                        <button type="submit" name="delete">刪除</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
     </main>
     <footer>
         &copy; 2024 6 Web

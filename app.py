@@ -94,10 +94,31 @@ def album():
     photos = os.listdir('static/uploads')
     return render_template('album.html', photos=photos)
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @admin_required
 def account():
-    return render_template('account.html')
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        username = request.form['username']
+        password = request.form['password']
+        is_admin = request.form.get('is_admin') == 'on'
+
+        if 'update' in request.form:
+            c.execute("UPDATE users SET username = ?, password = ?, is_admin = ? WHERE id = ?", 
+                      (username, password, is_admin, user_id))
+        elif 'delete' in request.form:
+            c.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        
+        conn.commit()
+
+    c.execute("SELECT * FROM users")
+    users = c.fetchall()
+    conn.close()
+
+    return render_template('account.html', users=users)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -41,3 +41,14 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.gallery img {
+    width: 200px;
+    height: auto;
+}
