@@ -1,21 +1,38 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>登入</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username">
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
-        <br>
-        <input type="submit" value="Login">
-    </form>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">首頁</a></li>
+                <li><a href="{{ url_for('announcements') }}">最新公告</a></li>
+                <li><a href="{{ url_for('album') }}">相簿</a></li>
+                <li><a href="{{ url_for('account') }}">帳號管理</a></li>
+                <li><a href="{{ url_for('login') }}">登入</a></li>
+                <li><a href="{{ url_for('register') }}">註冊</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>登入</h1>
+        <form method="post" action="{{ url_for('login') }}">
+            <label for="username">帳號:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">密碼:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <input type="submit" value="登入">
+        </form>
+    </main>
+    <footer>
+        &copy; 2024 6 Web
+    </footer>
 </body>
 </html>

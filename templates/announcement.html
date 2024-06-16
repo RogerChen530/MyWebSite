@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>註冊</title>
+    <title>最新公告</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -20,16 +20,12 @@
         </nav>
     </header>
     <main>
-        <h1>註冊</h1>
-        <form method="post" action="{{ url_for('register') }}">
-            <label for="username">帳號:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="password">密碼:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <input type="submit" value="註冊">
-        </form>
+        <h1>最新公告</h1>
+        <ul>
+            {% for announcement in announcements %}
+            <li>{{ announcement }}</li>
+            {% endfor %}
+        </ul>
     </main>
     <footer>
         &copy; 2024 6 Web
