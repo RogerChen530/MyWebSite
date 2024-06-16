@@ -1,14 +1,27 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Welcome!</h1>
-      <p>Current time: {{ time }}</p>
-      <a href="{{ url_for('login') }}">Login</a>
-      <a href="{{ url_for('register') }}">Register</a>
-    </div>
-  </body>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">首頁</a></li>
+                <li><a href="{{ url_for('login') }}">登入</a></li>
+                <li><a href="{{ url_for('register') }}">註冊</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>當前時間</h1>
+        <p>{{ current_time }}</p>
+    </main>
+    <footer>
+        &copy; 2024 6 Web
+    </footer>
+</body>
 </html>

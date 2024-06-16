@@ -13,23 +13,24 @@
                 <li><a href="{{ url_for('index') }}">首頁</a></li>
                 <li><a href="{{ url_for('announcements') }}">最新公告</a></li>
                 <li><a href="{{ url_for('album') }}">相簿</a></li>
+                {% if session.get('is_admin') %}
                 <li><a href="{{ url_for('account') }}">帳號管理</a></li>
-                <li><a href="{{ url_for('login') }}">登入</a></li>
-                <li><a href="{{ url_for('register') }}">註冊</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}">登出</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <h1>相簿</h1>
-        <form method="post" action="{{ url_for('upload_photo') }}" enctype="multipart/form-data">
+        {% if session.get('is_admin') %}
+        <form method="post" action="{{ url_for('album') }}" enctype="multipart/form-data">
             <input type="file" name="photo">
             <input type="submit" value="上傳">
         </form>
+        {% endif %}
         <div class="gallery">
             {% for photo in photos %}
-            <div class="photo">
-                <img src="{{ url_for('static', filename='uploads/' ~ photo) }}" alt="Photo">
-            </div>
+            <img src="{{ url_for('static', filename='uploads/' ~ photo) }}" alt="相片">
             {% endfor %}
         </div>
     </main>

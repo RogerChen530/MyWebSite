@@ -13,9 +13,10 @@
                 <li><a href="{{ url_for('index') }}">首頁</a></li>
                 <li><a href="{{ url_for('announcements') }}">最新公告</a></li>
                 <li><a href="{{ url_for('album') }}">相簿</a></li>
+                {% if session.get('is_admin') %}
                 <li><a href="{{ url_for('account') }}">帳號管理</a></li>
-                <li><a href="{{ url_for('login') }}">登入</a></li>
-                <li><a href="{{ url_for('register') }}">註冊</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}">登出</a></li>
             </ul>
         </nav>
     </header>
@@ -23,7 +24,7 @@
         <h1>最新公告</h1>
         <ul>
             {% for announcement in announcements %}
-            <li>{{ announcement }}</li>
+            <li>{{ announcement[0] }}</li>
             {% endfor %}
         </ul>
     </main>
