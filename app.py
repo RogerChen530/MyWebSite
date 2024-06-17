@@ -81,14 +81,12 @@ def announcements():
     c = conn.cursor()
 
     if request.method == 'POST' and session.get('is_admin'):
+        content = request.form['content']
         if 'add' in request.form:
-            content = request.form.get('content')
-            if content:
-                c.execute("INSERT INTO announcements (content) VALUES (?)", (content,))
+            c.execute("INSERT INTO announcements (content) VALUES (?)", (content,))
         elif 'delete' in request.form:
-            announcement_id = request.form.get('announcement_id')
-            if announcement_id:
-                c.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
+            announcement_id = request.form['announcement_id']
+            c.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
 
         conn.commit()
 
@@ -113,7 +111,7 @@ def album():
                 c.execute("INSERT INTO photos (filename) VALUES (?)", (filename,))
         elif 'delete' in request.form:
             photo_id = request.form['photo_id']
-            c.execute("SELECT filepath FROM photos WHERE id = ?", (photo_id,))
+            c.execute("SELECT filename FROM photos WHERE id = ?", (photo_id,))
             filename = c.fetchone()[0]
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             c.execute("DELETE FROM photos WHERE id = ?", (photo_id,))
