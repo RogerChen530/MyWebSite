@@ -31,7 +31,7 @@
         <div class="gallery">
             {% for photo in photos %}
             <div class="photo-container">
-                <img src="{{ url_for('static', filename='uploads/' ~ photo[1]) }}" alt="相片">
+                <img src="{{ url_for('static', filename='uploads/' ~ photo[1]) }}" alt="相片" style="width: 200px;">
                 {% if session.get('is_admin') %}
                 <form method="post" action="{{ url_for('album') }}">
                     <input type="hidden" name="photo_id" value="{{ photo[0] }}">

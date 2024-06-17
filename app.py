@@ -1,16 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from werkzeug.utils import secure_filename
 import sqlite3
-from functools import wraps
+import os
 from datetime import datetime
-import os  # 確保導入了os模塊
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'username' not in session:
+        if 'logged_in' not in session:
             return redirect(url_for('show_time'))
         return f(*args, **kwargs)
     return decorated_function
@@ -18,23 +21,19 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'username' not in session or not session.get('is_admin'):
-            return redirect(url_for('show_time'))
+        if not session.get('is_admin'):
+            return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
 
 @app.route('/')
-def index():
-    if 'username' in session:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        return render_template('index.html', current_time=current_time)
-    else:
-        return redirect(url_for('show_time'))
-
-@app.route('/show_time')
 def show_time():
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return render_template('show_time.html', current_time=current_time)
+    return render_template('show_time.html')
+
+@app.route('/index')
+@login_required
+def index():
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -47,14 +46,16 @@ def login():
         user = c.fetchone()
         conn.close()
         if user:
+            session['logged_in'] = True
             session['username'] = user[1]
-            session['is_admin'] = user[3]
+            session['is_admin'] = user[3] == 1
             return redirect(url_for('index'))
         else:
-            flash('無效的用戶名或密碼')
+            return "Invalid credentials"
     return render_template('login.html')
 
 @app.route('/logout')
+@login_required
 def logout():
     session.clear()
     return redirect(url_for('show_time'))
@@ -64,7 +65,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        is_admin = False
+        is_admin = request.form.get('is_admin') == 'on'
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
         c.execute("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)", (username, password, is_admin))
@@ -124,6 +125,7 @@ def album():
     return render_template('album.html', photos=photos)
 
 @app.route('/account', methods=['GET', 'POST'])
+@login_required
 @admin_required
 def account():
     conn = sqlite3.connect('database.db')
@@ -148,6 +150,9 @@ def account():
     conn.close()
 
     return render_template('account.html', users=users)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 if __name__ == '__main__':
     app.run(debug=True)
