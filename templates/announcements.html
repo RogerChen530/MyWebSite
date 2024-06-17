@@ -33,7 +33,7 @@
             <li>
                 {{ announcement[1] }}
                 {% if session.get('is_admin') %}
-                <form method="post" action="{{ url_for('announcements') }}">
+                <form method="post" action="{{ url_for('announcements') }}" style="display:inline;">
                     <input type="hidden" name="announcement_id" value="{{ announcement[0] }}">
                     <input type="submit" name="delete" value="刪除">
                 </form>
