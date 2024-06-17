@@ -116,13 +116,13 @@ def album():
     if request.method == 'POST':
         if 'photo' in request.files:
             photo = request.files['photo']
-            if photo.filename != '':
+            if photo and allowed_file(photo.filename):
                 filename = secure_filename(photo.filename)
                 photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                c.execute("INSERT INTO photos (filename) VALUES (?)", (filename,))
+                c.execute("INSERT INTO photos (filepath) VALUES (?)", (filename,))
         elif 'delete' in request.form:
             photo_id = request.form['photo_id']
-            c.execute("SELECT filename FROM photos WHERE id = ?", (photo_id,))
+            c.execute("SELECT filepath FROM photos WHERE id = ?", (photo_id,))
             filename = c.fetchone()[0]
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             c.execute("DELETE FROM photos WHERE id = ?", (photo_id,))
