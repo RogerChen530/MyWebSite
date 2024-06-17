@@ -30,7 +30,15 @@
         {% endif %}
         <div class="gallery">
             {% for photo in photos %}
-            <img src="{{ url_for('static', filename='uploads/' ~ photo) }}" alt="相片">
+            <div class="photo-container">
+                <img src="{{ url_for('static', filename='uploads/' ~ photo[1]) }}" alt="相片">
+                {% if session.get('is_admin') %}
+                <form method="post" action="{{ url_for('album') }}">
+                    <input type="hidden" name="photo_id" value="{{ photo[0] }}">
+                    <input type="submit" name="delete" value="刪除">
+                </form>
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
     </main>

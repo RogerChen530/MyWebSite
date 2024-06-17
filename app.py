@@ -73,25 +73,54 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/announcements')
+@app.route('/announcements', methods=['GET', 'POST'])
 @login_required
 def announcements():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM announcements")  # 修正這裡的SQL查詢
+
+    if request.method == 'POST' and session.get('is_admin'):
+        content = request.form['content']
+        if 'add' in request.form:
+            c.execute("INSERT INTO announcements (content) VALUES (?)", (content,))
+        elif 'delete' in request.form:
+            announcement_id = request.form['announcement_id']
+            c.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
+
+        conn.commit()
+
+    c.execute("SELECT * FROM announcements")
     announcements = c.fetchall()
     conn.close()
-    return render_template('announcement.html', announcements=announcements)
+
+    return render_template('announcements.html', announcements=announcements)
 
 @app.route('/album', methods=['GET', 'POST'])
 @login_required
 def album():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
     if request.method == 'POST':
-        if not session.get('is_admin'):
-            return redirect(url_for('album'))
-        photo = request.files['photo']
-        photo.save(f"static/uploads/{photo.filename}")
-    photos = os.listdir('static/uploads')
+        if 'photo' in request.files:
+            photo = request.files['photo']
+            if photo.filename != '':
+                filename = secure_filename(photo.filename)
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                c.execute("INSERT INTO photos (filename) VALUES (?)", (filename,))
+        elif 'delete' in request.form:
+            photo_id = request.form['photo_id']
+            c.execute("SELECT filename FROM photos WHERE id = ?", (photo_id,))
+            filename = c.fetchone()[0]
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            c.execute("DELETE FROM photos WHERE id = ?", (photo_id,))
+
+        conn.commit()
+
+    c.execute("SELECT * FROM photos")
+    photos = c.fetchall()
+    conn.close()
+
     return render_template('album.html', photos=photos)
 
 @app.route('/account', methods=['GET', 'POST'])
