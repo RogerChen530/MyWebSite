@@ -24,8 +24,8 @@
         <h1>最新公告</h1>
         {% if session.get('is_admin') %}
         <form method="post" action="{{ url_for('announcements') }}">
-            <input type="text" name="content" placeholder="新增公告">
-            <input type="submit" name="add" value="新增">
+            <textarea name="content" rows="4" cols="50" placeholder="輸入新的公告..."></textarea>
+            <input type="submit" name="add" value="新增公告">
         </form>
         {% endif %}
         <ul>
@@ -33,7 +33,7 @@
             <li>
                 {{ announcement[1] }}
                 {% if session.get('is_admin') %}
-                <form method="post" action="{{ url_for('announcements') }}">
+                <form method="post" action="{{ url_for('announcements') }}" style="display: inline;">
                     <input type="hidden" name="announcement_id" value="{{ announcement[0] }}">
                     <input type="submit" name="delete" value="刪除">
                 </form>
