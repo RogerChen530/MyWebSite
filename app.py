@@ -81,20 +81,31 @@ def announcements():
     c = conn.cursor()
 
     if request.method == 'POST' and session.get('is_admin'):
-        content = request.form['content']
         if 'add' in request.form:
-            c.execute("INSERT INTO announcements (content) VALUES (?)", (content,))
+            title = request.form.get('title')
+            content = request.form.get('content')
+            if title and content:
+                c.execute("INSERT INTO announcements (title, content) VALUES (?, ?)", (title, content))
+                conn.commit()
         elif 'delete' in request.form:
-            announcement_id = request.form['announcement_id']
-            c.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
+            announcement_id = request.form.get('announcement_id')
+            if announcement_id:
+                c.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
+                conn.commit()
 
-        conn.commit()
-
-    c.execute("SELECT * FROM announcements")
+    c.execute("SELECT id, title FROM announcements")
     announcements = c.fetchall()
+
+    if 'view_content' in request.args:
+        announcement_id = request.args.get('view_content')
+        c.execute("SELECT content FROM announcements WHERE id = ?", (announcement_id,))
+        content = c.fetchone()[0]
+    else:
+        content = None
+
     conn.close()
 
-    return render_template('announcements.html', announcements=announcements)
+    return render_template('announcements.html', announcements=announcements, content=content)
 
 @app.route('/album', methods=['GET', 'POST'])
 @login_required

@@ -24,8 +24,9 @@
         <h1>最新公告</h1>
         {% if session.get('is_admin') %}
         <form method="post" action="{{ url_for('announcements') }}">
-            <input type="text" name="content" placeholder="新增公告">
-            <input type="submit" name="add" value="新增">
+            <input type="text" name="title" placeholder="公告標題">
+            <textarea name="content" rows="4" cols="50" placeholder="輸入新的公告內容..."></textarea>
+            <input type="submit" name="add" value="新增公告">
         </form>
         {% endif %}
         <ul>
@@ -33,15 +34,23 @@
             <li>
                 {{ announcement[1] }}
                 {% if session.get('is_admin') %}
-                <form method="post" action="{{ url_for('announcements') }}" style="display:inline;">
+                <form method="post" action="{{ url_for('announcements') }}" style="display: inline;">
                     <input type="hidden" name="announcement_id" value="{{ announcement[0] }}">
                     <input type="submit" name="delete" value="刪除">
                 </form>
                 {% endif %}
+                <a href="{{ url_for('announcements', view_content=announcement[0]) }}">顯示內容</a>
             </li>
             {% endfor %}
         </ul>
+        {% if content %}
+        <div class="content-view">
+            <h2>公告內容</h2>
+            <p>{{ content }}</p>
+        </div>
+        {% endif %}
     </main>
+    
     <footer>
         &copy; 2024 6 Web
     </footer>

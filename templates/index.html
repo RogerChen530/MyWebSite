@@ -27,10 +27,25 @@
     </header>
     <main>
         <h1>歡迎來到首頁</h1>
-        <p>當前時間：{{ current_time }}</p>
+        <p>現在時間</p>
+        <div id="time"></div>
     </main>
     <footer>
         &copy; 2024 6 Web
     </footer>
+    <script>
+        function updateTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('time').innerHTML = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();  // 初始化
+    </script>
 </body>
 </html>
